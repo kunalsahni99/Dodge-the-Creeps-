@@ -1,0 +1,305 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Main.gd" type="Script" id=1]
+[ext_resource path="res://Mob.tscn" type="PackedScene" id=2]
+[ext_resource path="res://art/LFzemUq.jpg" type="Texture" id=3]
+[ext_resource path="res://art/0957db95009a6e6.jpg" type="Texture" id=4]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
+[ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=7]
+[ext_resource path="res://art/gameover.wav" type="AudioStream" id=8]
+[ext_resource path="res://art/pause_new.png" type="Texture" id=9]
+[ext_resource path="res://art/pause_pressed.png" type="Texture" id=10]
+[ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://art/logout-rounded-up.png" type="Texture" id=12]
+[ext_resource path="res://art/logout-rounded-up (1).png" type="Texture" id=13]
+[ext_resource path="res://art/enter-2.png" type="Texture" id=14]
+[ext_resource path="res://art/enter-2 (1).png" type="Texture" id=15]
+[ext_resource path="res://ex_popup.tscn" type="PackedScene" id=16]
+
+[sub_resource type="Curve2D" id=1]
+
+bake_interval = 5.0
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 1.70602, 3.56798, 0, 0, 0, 0, 482.263, 3.26522, 0, 0, 0, 0, 480.489, 729.458, 0, 0, 0, 0, 0.794434, 732.118, 0, 0, 0, 0, 1.97066, 3.83263 )
+}
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends Popup
+
+func _on_exit_but_pressed():
+	get_tree().change_scene(\"res://Main.tscn\")
+	"
+
+[sub_resource type="DynamicFont" id=3]
+
+size = 100
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 11 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="DynamicFont" id=4]
+
+size = 20
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 11 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="DynamicFont" id=5]
+
+size = 20
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 11 )
+_sections_unfolded = [ "Font" ]
+
+[node name="Main" type="Node" index="0"]
+
+script = ExtResource( 1 )
+Mob = ExtResource( 2 )
+
+[node name="Background" type="Sprite" parent="." index="0"]
+
+position = Vector2( 245.759, 366.063 )
+scale = Vector2( 0.474728, 0.40413 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 4 )
+_sections_unfolded = [ "Offset" ]
+
+[node name="Player" parent="." index="1" instance=ExtResource( 5 )]
+
+_sections_unfolded = [ "Audio Bus", "Transform", "Visibility" ]
+
+[node name="MobTimer" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = false
+autostart = false
+
+[node name="ScoreTimer" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[node name="StartTimer" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 2.0
+one_shot = true
+autostart = false
+
+[node name="StartPosition" type="Position2D" parent="." index="5"]
+
+position = Vector2( 256.324, 418.711 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="HUD" parent="." index="6" instance=ExtResource( 6 )]
+
+[node name="Music" type="AudioStreamPlayer" parent="." index="7"]
+
+stream = ExtResource( 7 )
+volume_db = -8.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="." index="8"]
+
+stream = ExtResource( 8 )
+volume_db = -5.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="MobPath" type="Path2D" parent="." index="9"]
+
+curve = SubResource( 1 )
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath" index="0"]
+
+position = Vector2( 1.70602, 3.56798 )
+rotation = -0.000630111
+offset = 0.0
+h_offset = 0.0
+v_offset = 0.0
+rotate = true
+cubic_interp = true
+loop = true
+lookahead = 4.0
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Pause" type="TouchScreenButton" parent="." index="10"]
+
+pause_mode = 2
+position = Vector2( 406.381, 18.4161 )
+scale = Vector2( 0.036044, 0.0331186 )
+normal = ExtResource( 9 )
+pressed = ExtResource( 10 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = ""
+visibility_mode = 0
+_sections_unfolded = [ "Pause" ]
+
+[node name="Popup_pause" type="Popup" parent="." index="11"]
+
+pause_mode = 2
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 50.0
+margin_bottom = 48.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+script = SubResource( 2 )
+_sections_unfolded = [ "Pause" ]
+
+[node name="pause" type="Label" parent="Popup_pause" index="0"]
+
+pause_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 52.0
+margin_top = 85.0
+margin_right = 387.0
+margin_bottom = 205.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 3 )
+text = "Pause"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Pause", "custom_fonts" ]
+
+[node name="n_game" type="Label" parent="Popup_pause" index="1"]
+
+pause_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 30.0
+margin_top = 432.0
+margin_right = 147.0
+margin_bottom = 457.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 4 )
+text = "New game"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Pause", "Rect" ]
+
+[node name="New_game" type="TouchScreenButton" parent="Popup_pause" index="2"]
+
+pause_mode = 2
+position = Vector2( 73.6642, 369.549 )
+scale = Vector2( 0.052158, 0.052302 )
+normal = ExtResource( 12 )
+pressed = ExtResource( 13 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = ""
+visibility_mode = 0
+_sections_unfolded = [ "Pause", "Transform" ]
+
+[node name="Continue" type="TouchScreenButton" parent="Popup_pause" index="3"]
+
+pause_mode = 2
+position = Vector2( 318.416, 369.549 )
+scale = Vector2( 0.052158, 0.052302 )
+normal = ExtResource( 14 )
+pressed = ExtResource( 15 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = ""
+visibility_mode = 0
+_sections_unfolded = [ "Pause", "Transform" ]
+
+[node name="resume" type="Label" parent="Popup_pause" index="4"]
+
+pause_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 297.0
+margin_top = 434.0
+margin_right = 383.0
+margin_bottom = 459.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 5 )
+text = "Resume"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Pause", "custom_fonts" ]
+
+[node name="ex_popup" parent="Popup_pause" index="5" instance=ExtResource( 16 )]
+
+visible = false
+margin_left = 17.0
+margin_right = 57.0
+
+[connection signal="hit" from="Player" to="." method="game_over"]
+
+[connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
+
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
+
+[connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
+
+[connection signal="start_game" from="HUD" to="." method="new_game"]
+
+[connection signal="pressed" from="Pause" to="." method="_on_Pause_pressed"]
+
+[connection signal="pressed" from="Popup_pause/New_game" to="." method="_on_New_game_pressed"]
+
+[connection signal="pressed" from="Popup_pause/Continue" to="." method="_on_Continue_pressed"]
+
+
